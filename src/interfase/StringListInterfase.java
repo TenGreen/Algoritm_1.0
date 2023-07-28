@@ -1,6 +1,6 @@
 package interfase;
 
-public interface StringListInterfase {
+public interface StringListInterface {
 
     // Добавление элемента.
     // Вернуть добавленный элемент
@@ -60,7 +60,7 @@ public interface StringListInterfase {
     // Сравнить текущий список с другим.
     // Вернуть true/false или исключение,
     // если передан null.
-    boolean equals(StringListInterfase otherList);
+    boolean equals(StringList otherList);
 
     // Вернуть фактическое количество элементов.
     int size();

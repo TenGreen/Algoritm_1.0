@@ -1,17 +1,49 @@
-import interfase.StringListInterfase;
+import exeption.ArrayIsFull;
+import exeption.IndexIsLargerOfSizeArray;
+import exeption.NotFoundExeptoin;
+import interfase.StringListInterface;
+import interfase.StringListInterface;
 
-public class StringList  implements StringListInterfase {
-    @Override
-    public String add(String item) {
-        return null;
-        // Добавление элемента.
-        // Вернуть добавленный элемент
-        // в качестве результата выполнения.
+
+public class StringList implements StringListInterface {
+
+    private String[] strings;
+
+    public StringList(int size) {
+        this.strings = new String[size];
     }
 
     @Override
+    public String add(String item) throws ArrayIsFull {
+        boolean addTrue = false;
+        int actual = 0;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i] == null) {
+                strings[i] = item;
+                actual = i;
+                addTrue = true;
+                break;
+            }
+        }
+        if (!addTrue) {
+            throw new ArrayIsFull();
+        }
+        return strings[actual];
+    }
+    // Добавление элемента.
+    // Вернуть добавленный элемент
+    // в качестве результата выполнения.
+
+
+    @Override
     public String add(int index, String item) {
-        return null;
+        if (index >= strings.length){
+            throw new IndexIsLargerOfSizeArray();
+        }
+        if (strings[index] == null) {
+            strings[index] = item;
+        } else throw new ArrayIsFull();
+        return strings[index];
         // Добавление элемента
         // на определенную позицию списка.
         // Если выходит за пределы фактического
@@ -23,7 +55,11 @@ public class StringList  implements StringListInterfase {
 
     @Override
     public String set(int index, String item) {
-        return null;
+        strings[index] = item;
+        if (index >= strings.length){
+            throw new IndexIsLargerOfSizeArray();
+        }
+        return strings[index];
         // Установить элемент
         // на определенную позицию,
         // затерев существующий.
@@ -35,12 +71,34 @@ public class StringList  implements StringListInterfase {
 
     @Override
     public String remove(String item) {
-        return null;
+        String actual = null;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i].equals(item)) {
+                actual = strings[i];
+                strings[i] = null;
+            }
+        }
+        if (actual == null){
+            throw new NotFoundExeptoin();
+        }
+        return actual;
     }
+    // Удаление элемента.
+    // Вернуть удаленный элемент
+    // или исключение, если подобный
+    // элемент отсутствует в списке.
 
     @Override
     public String remove(int index) {
-        return null;
+        String actual = null;
+        if (strings[index] != null) {
+            actual = strings[index];
+            strings[index] = null;
+        }
+        if (actual == null) {
+            throw new NotFoundExeptoin();
+        }
+        return actual;
         // Удаление элемента по индексу.
         // Вернуть удаленный элемент
         // или исключение, если подобный
@@ -78,7 +136,7 @@ public class StringList  implements StringListInterfase {
     }
 
     @Override
-    public boolean equals(StringListInterfase otherList) {
+    public boolean equals(StringList otherList) {
         return false;
         // Сравнить текущий список с другим.
         // Вернуть true/false или исключение,
