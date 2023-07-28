@@ -1,8 +1,4 @@
-import exeption.ArrayIsEmpty;
-import exeption.ArrayIsFull;
-import exeption.IndexIsLargerOfSizeArray;
-import exeption.NotFoundExeptoin;
-import interfase.StringListInterface;
+import exeption.*;
 import interfase.StringListInterface;
 
 
@@ -15,21 +11,32 @@ public class StringList implements StringListInterface {
     }
 
     @Override
-    public String add(String item) throws ArrayIsFull {
-        boolean addTrue = false;
+    public String add(String item) {
+        if (item == null) {
+            throw new ItemIsNull();
+        }
         int actual = 0;
         for (int i = 0; i < strings.length; i++) {
             if (strings[i] == null) {
                 strings[i] = item;
                 actual = i;
-                addTrue = true;
                 break;
             }
         }
-        if (!addTrue) {
-            throw new ArrayIsFull();
+        if ((strings.length / actual) > 0.75f) {
+            IncreaseOverallSize(strings);
         }
+
         return strings[actual];
+    }
+
+    private static String[] IncreaseOverallSize(String[] strings) {
+        String[] newString = new String[(int) (strings.length * 1.5f)];
+        for (int i = 0; i < strings.length; i++) {
+            newString[i] = strings[i];
+            strings[i] = null;
+        }
+        return newString;
     }
     // Добавление элемента.
     // Вернуть добавленный элемент
@@ -38,12 +45,16 @@ public class StringList implements StringListInterface {
 
     @Override
     public String add(int index, String item) {
-        if (index >= strings.length){
+        if (item == null) {
+            throw new ItemIsNull();
+        }
+        if (index >= strings.length) {
             throw new IndexIsLargerOfSizeArray();
         }
-        if (strings[index] == null) {
-            strings[index] = item;
-        } else throw new ArrayIsFull();
+        if (strings[index - 1] == null) {
+            throw new IndexIsLargerOfSizeArray();
+        }
+        strings[index] = item;
         return strings[index];
         // Добавление элемента
         // на определенную позицию списка.
@@ -56,8 +67,11 @@ public class StringList implements StringListInterface {
 
     @Override
     public String set(int index, String item) {
+        if (item == null) {
+            throw new ItemIsNull();
+        }
         strings[index] = item;
-        if (index >= strings.length){
+        if (index >= strings.length) {
             throw new IndexIsLargerOfSizeArray();
         }
         return strings[index];
@@ -72,6 +86,9 @@ public class StringList implements StringListInterface {
 
     @Override
     public String remove(String item) {
+        if (item == null) {
+            throw new ItemIsNull();
+        }
         String actual = null;
         for (int i = 0; i < strings.length; i++) {
             if (strings[i].equals(item)) {
@@ -80,7 +97,7 @@ public class StringList implements StringListInterface {
                 break;
             }
         }
-        if (actual == null){
+        if (actual == null) {
             throw new NotFoundExeptoin();
         }
         return actual;
@@ -109,6 +126,9 @@ public class StringList implements StringListInterface {
 
     @Override
     public boolean contains(String item) {
+        if (item == null) {
+            throw new ItemIsNull();
+        }
         boolean result = false;
         for (int i = 0; i < strings.length; i++) {
             if (strings[i].equals(item)) {
@@ -123,6 +143,9 @@ public class StringList implements StringListInterface {
 
     @Override
     public int indexOf(String item) {
+        if (item == null) {
+            throw new ItemIsNull();
+        }
         int index = -1;
         for (int i = 0; i < strings.length; i++) {
             if (strings[i].equals(item)) {
@@ -138,6 +161,9 @@ public class StringList implements StringListInterface {
 
     @Override
     public int lastIndexOf(String item) {
+        if (item == null) {
+            throw new ItemIsNull();
+        }
         int index = -1;
         for (int i = strings.length; i == 0; i--) {
             if (strings[i].equals(item)) {
@@ -147,14 +173,14 @@ public class StringList implements StringListInterface {
         }
         return index;
     }
-        // Поиск элемента с конца.
-        // Вернуть индекс элемента
-        // или -1 в случае отсутствия.
+    // Поиск элемента с конца.
+    // Вернуть индекс элемента
+    // или -1 в случае отсутствия.
 
 
     @Override
     public String get(int index) {
-        if (index >= strings.length){
+        if (index >= strings.length) {
             throw new IndexIsLargerOfSizeArray();
         }
         String result = strings[index];
@@ -164,7 +190,6 @@ public class StringList implements StringListInterface {
         // если выходит за рамки фактического
         // количества элементов.
     }
-
 
 
     @Override
