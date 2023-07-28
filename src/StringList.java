@@ -1,3 +1,4 @@
+import exeption.ArrayIsEmpty;
 import exeption.ArrayIsFull;
 import exeption.IndexIsLargerOfSizeArray;
 import exeption.NotFoundExeptoin;
@@ -76,6 +77,7 @@ public class StringList implements StringListInterface {
             if (strings[i].equals(item)) {
                 actual = strings[i];
                 strings[i] = null;
+                break;
             }
         }
         if (actual == null){
@@ -107,37 +109,76 @@ public class StringList implements StringListInterface {
 
     @Override
     public boolean contains(String item) {
-        return false;
+        boolean result = false;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i].equals(item)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
         // Проверка на существование элемента.
         // Вернуть true/false;
     }
 
     @Override
     public int indexOf(String item) {
-        return 0;
+        int index = -1;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i].equals(item)) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
+    // Поиск элемента.
+    // Вернуть индекс элемента
+    // или -1 в случае отсутствия.
 
     @Override
     public int lastIndexOf(String item) {
-        return 0;
+        int index = -1;
+        for (int i = strings.length; i == 0; i--) {
+            if (strings[i].equals(item)) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
         // Поиск элемента с конца.
         // Вернуть индекс элемента
         // или -1 в случае отсутствия.
-    }
+
 
     @Override
     public String get(int index) {
-        return null;
+        if (index >= strings.length){
+            throw new IndexIsLargerOfSizeArray();
+        }
+        String result = strings[index];
+        return result;
         // Получить элемент по индексу.
         // Вернуть элемент или исключение,
         // если выходит за рамки фактического
         // количества элементов.
-
     }
+
+
 
     @Override
     public boolean equals(StringList otherList) {
-        return false;
+        if (otherList == null) {
+            throw new ArrayIsEmpty();
+        }
+        boolean result = false;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i].equals(otherList[i])) {
+                break;
+            }
+        }
+        return result;
         // Сравнить текущий список с другим.
         // Вернуть true/false или исключение,
         // если передан null.
@@ -145,13 +186,25 @@ public class StringList implements StringListInterface {
 
     @Override
     public int size() {
-        return 0;
+        int result = 0;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i] != null) {
+                result++;
+            }
+        }
+        return result;
         // Вернуть фактическое количество элементов.
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        boolean result = false;
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i] != null) {
+                result = true;
+            }
+        }
+        return result;
         // Вернуть true,
         // если элементов в списке нет,
         // иначе false.
@@ -159,12 +212,16 @@ public class StringList implements StringListInterface {
 
     @Override
     public void clear() {
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = null;
+        }
 // Удалить все элементы из списка.
     }
 
     @Override
     public String[] toArray() {
-        return new String[0];
+        String[] toArray = new String[];
+        return toArray;
         // Создать новый массив
         // из строк в списке
         // и вернуть его.
